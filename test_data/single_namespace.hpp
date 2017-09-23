@@ -1,0 +1,7 @@
+#ifndef EMBEDDED_NAMESPACES_HPP
+#define EMBEDDED_NAMESPACES_HPP
+
+namespace foo {}
+
+#endif /* EMBEDDED_NAMESPACES_HPP */
+

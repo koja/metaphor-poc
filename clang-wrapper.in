@@ -1,0 +1,19 @@
+#! /bin/bash
+
+ld_dump_cross_refs=''
+${llvm_rootdir}/build/bin/clang++ \
+  -stdlib=libc++ -nostdinc++ \
+	-fPIC -fvisibility-inlines-hidden \
+	-Wall -W -Wno-unused-parameter -Wwrite-strings -Wcast-qual -Wmissing-field-initializers \
+  -pedantic -Wno-long-long -Wcovered-switch-default -Wnon-virtual-dtor \
+  -Wdelete-non-virtual-dtor -Werror=date-time -ffunction-sections -fdata-sections \
+	-O0 -DNDEBUG -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS \
+	-isystem ${llvm_rootdir}/build/include/c++/v1/ \
+	-I${llvm_rootdir}/include/ -I${llvm_rootdir}/build/include/ \
+	-I${llvm_rootdir}/tools/clang/include/ -I${llvm_rootdir}/build/tools/clang/include \
+  -lc++ -lc++abi \
+  -Xlinker --cref -Xlinker -nostdlib -Xlinker --no-demangle -Xlinker -Map="$(pwd)/$(uuidgen).ldmap" \
+	-Xclang -load 	-Xclang "${CMAKE_BINARY_DIR}/libplugin_dump_ast.so" \
+	-Xclang -add-plugin -Xclang generate-binary-ast-file \
+  -v \
+  "$@"

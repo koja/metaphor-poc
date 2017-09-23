@@ -1,0 +1,25 @@
+material transparent_with_rim_mat
+{
+   technique
+   {
+      pass
+      {
+         ambient 0.616687 0.90461 1 0.7
+         diffuse 0.616687 0.90461 1 0.7
+         specular 1 1 1 1 20
+
+         scene_blend alpha_blend         
+
+         depth_write off
+
+         texture_unit
+         {
+            cubic_texture rim.dds combinedUVW
+            tex_address_mode clamp
+            colour_op_ex add src_texture src_current
+            colour_op_multipass_fallback one one
+            env_map cubic_normal
+         }
+      }
+   }
+}
